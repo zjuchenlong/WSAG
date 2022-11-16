@@ -32,5 +32,6 @@ The test set `crosstask_test.pkl` is same format as the training set, with two m
 - **crosstask_annotations**: The ground-truth for evaluation. *Keys* are the video ids, and *Values* are all possible ground-truth annotations propagated from CrossTask.
 
 ### Download Visual Features
-- **train_s3d_features_from_ht100m** (coming soon)
-- **test_s3d_features_fr16_sz256_nf16** (coming soon)
+[Google drive](https://drive.google.com/drive/folders/1Ril5qUilNGw8gBvCCjhnJo9SqetrKT_K?usp=sharing)
+- **train_s3d_features_from_ht100m**
+- **test_s3d_features_fr16_sz256_nf16** 
