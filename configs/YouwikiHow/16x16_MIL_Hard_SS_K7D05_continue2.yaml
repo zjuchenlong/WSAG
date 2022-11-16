@@ -1,0 +1,93 @@
+WORKERS: 16
+
+MODEL_DIR: ./checkpoints
+RESULT_DIR: ./results
+LOG_DIR: ./log
+DATA_DIR: ./data/YouwikiHow
+
+DATASET:
+  NAME: YouwikiHow
+  VIS_INPUT_TYPE: s3d
+  NO_VAL: True
+  NUM_SAMPLE_CLIPS: 256
+  TARGET_STRIDE: 16
+  NORMALIZE: True
+  RANDOM_SAMPLING: False
+
+TEST:
+  EVAL_TRAIN: False
+  NMS_THRESH: 0.5
+  PRED_THRESH: 0.01
+  TOP_K: 20
+  ALL_TOP_K: [50, 100]
+  INTERVAL: 1.0
+
+TRAIN:
+  BATCH_SIZE: 32
+  NUM_SAMPLE_SENTENCE: 20
+  LR: 0.00005 # 0.0001
+  WEIGHT_DECAY: 0.0000
+  MAX_EPOCH: 100
+  CONTINUE: True
+
+LOSS:
+  NAME: ['MIL_v5_Hard_SS']
+  PARAMS:
+    SCORE_THDS: 0.5
+    TOPK_SEG: 5
+    DELTA_ALPHA: 0.3
+    TOPK_SENT_RATIO: 0.3
+    RESTRICT_SIZE: 7
+    RESTRICT_THDS: 0.5
+  LAMBDA:
+    MIL_LOSS: 1.0
+    SS_CONST_LOSS: 1.0
+
+MODEL:
+  NAME: DualMIL
+  CHECKPOINT: /dvmm-filer3a/users/chenlong/Projects/ws-ms-grounding/checkpoints/wikihow_grounding/WSTAN_s3d/MIL_16x16_coconut/iter029300-46.84-26.55-28.33-16.36-11.71-5.54.pkl
+
+
+DualMIL:
+
+  FRAME_MODULE:
+    NAME: FrameAvgPool
+    PARAMS:
+      INPUT_SIZE: 1024
+      HIDDEN_SIZE: 512
+      KERNEL_SIZE: 16
+      STRIDE: 16
+
+  PROP_MODULE:
+    NAME: SparsePropConv
+    PARAMS:
+      HIDDEN_SIZE: 512
+      NUM_SCALE_LAYERS: [16]
+
+  FUSION_MODULE:
+    NAME: BaseFusion
+    PARAMS:
+      HIDDEN_SIZE: 512
+      TXT_INPUT_SIZE: 300
+      TXT_HIDDEN_SIZE: 512
+      LSTM:
+        NUM_LAYERS: 3
+        BIDIRECTIONAL: False
+
+  MAP_MODULE:
+    NAME: MapConv
+    PARAMS:
+      INPUT_SIZE: 512
+      HIDDEN_SIZES: [512, 512, 512]
+      KERNEL_SIZES: [3, 3, 3]
+      STRIDES: [1, 1, 1]
+      PADDINGS: [1, 1, 1]
+      DILATIONS: [1, 1, 1]
+      SQUEEZE: False
+
+  PRED_INPUT_SIZE: 512
+  N_REF: 0
+
+CUDNN:
+  DETERMINISTIC: False
+  BENCHMARK: True
