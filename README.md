@@ -30,7 +30,7 @@ python train.py \
 
 
 ## Pretrained Weights
-These [Provided Weights](https://drive.google.com/drive/folders/1gG31AjpIqKjfLmRH6trga8o1KBvKPpqt?usp=sharing) can be saved into the directory ``checkopoints``, such as:
+These [Provided Weights](https://gohkust-my.sharepoint.com/:f:/g/personal/longchen_ust_hk/Er5DVcqPWOdNt5wYypnBQSIBLx8cTKmo7MbwPCIU_lVlRg?e=EIz4XI) can be saved into the directory ``checkopoints``, such as:
 ```
 WSAG/
 |   +-- checkpoints/
